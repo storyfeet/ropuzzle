@@ -1,0 +1,22 @@
+<canvas id="main_canvas" width="600" height="400" />
+
+<script type="module">
+	import * as rp from "./ropuzzle.js";
+
+	window.tt = rp.newTurtle(document.getElementById("main_canvas"),"level1A");
+
+
+	async function level1(turtle){
+		while(turtle.enabled){
+			if (turtle.onRed()){
+				await turtle.rt();
+			}
+			await turtle.fd();
+		}
+	}
+	window.level1 = level1;
+
+
+</script>
+
+
