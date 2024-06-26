@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ro-Puzzle Box</title>
+	</head>
+	<body>
+		<table><tr>
+			<td id="canvas_box">
+			</td>
+			<td>
+				<textarea id="code_area" rows="20" cols="70"  ></textarea><br>
+				<button id="btn_run" onclick="run()">run</button>
+				<button reset="btn_reset" onclick="reset();">reset</button>
+			</td>
+		</tr></table>
+
+
+			
+
+
+
+<script type="module">
+	import * as rp from "./ropuzzle.js";
+
+	function run(){
+		let tx = document.getElementById("code_area").value;
+		eval(tx);
+	}
+
+
+	function newPuzzle(cbox,name){
+		let newCanvas = document.createElement("canvas");
+		newCanvas.width = 400;
+		newCanvas.height = 400;
+		cbox.appendChild(newCanvas);
+		return rp.newTurtle(newCanvas,name);
+	}
+
+	function reset() {
+		let tset = [];
+		let cbox = document.getElementById("canvas_box");	
+		cbox.innerHTML = "";
+		tset.push(newPuzzle(cbox,"level1A"));
+		tset.push(newPuzzle(cbox,"level1B"));
+		window.tset = tset;
+	}
+
+	reset();
+
+	window.reset = reset;
+	window.run = run;
+
+</script>
+
+	</body>
+</html>

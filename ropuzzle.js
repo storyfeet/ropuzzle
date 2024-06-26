@@ -221,12 +221,21 @@ export function newTurtle(canvas, level) {
 
 const levels = {
 	level1A: [
-		"RWWWWWR_",
-		"W_____W_",
-		"W_RWS_W_",
-		"W_W___W_",
-		"W_W___W_",
-		"W_RWWWR_",
-		"B_______"
+		"_RWWWWWR_",
+		"_W_____W_",
+		"_W_RWS_W_",
+		"_W_W___W_",
+		"_W_W___W_",
+		"_W_RWWWR_",
+		"_B_______"
+	],
+	level1B: [
+		"____RWWS_",
+		"____W____",
+		"_RWWWWWWR",
+		"_W__W___W",
+		"_W__W___W",
+		"_W__RWWWR",
+		"_B_______",
 	]
 }
