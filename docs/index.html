@@ -3,17 +3,45 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Ro-Puzzle Box</title>
+		<style>
+			body {
+				display:flex;
+				flex-wrap:wrap;
+			}
+			.info_box {
+				border:1px solid black;
+				padding:5px;
+				width: min-content;
+			}
+			textarea {
+				margin-left:30px;
+			}
+		</style>
 	</head>
 	<body>
-		<table><tr>
-			<td id="canvas_box">
-			</td>
-			<td>
-				<textarea id="code_area" rows="20" cols="70"  ></textarea><br>
+		<div id="canvas_box" class="info_box"> </div>
+		<div class="info_box">
 				<button id="btn_run" onclick="run()">run</button>
 				<button reset="btn_reset" onclick="reset();">reset</button>
-			</td>
-		</tr></table>
+				<br>
+				<code>async function solvePuzzle(tt) {</code><br>
+				<textarea id="code_area" rows="20" cols="70"  ></textarea><br>
+				<code>}</code>
+
+			<h2>Available Methods</h2>
+
+			<pre><code>
+				tt.enabled -> boolean : Can the turtle still move?
+				tt.onRed() -> boolean: Is the turtle on a Red square?
+				await tt.fd() : Move the turtle forward one space
+				await tt.fd(n) : Move the turtle forward n space
+				await tt.rt() : Turn the turtle RighT one quarter turn.
+				await tt.rt(n) : Turn the turtle RighT n quarter turns.
+				await tt.lt() : Turn the turtle LefT one quarter turn.
+				await tt.lt(n) : Turn the turtle LefT n quarter turns.
+			</code></pre>
+		</div>
+
 
 
 			
@@ -23,9 +51,17 @@
 <script type="module">
 	import * as rp from "./ropuzzle.js";
 
+	const CODE_TOP = "async function solvePuzzle(tt) {\n";
+
+	const CODE_BOTTOM =
+		'\n} \nfor (let p in window.tset){ solvePuzzle(window.tset[p]) } ';
+
+
 	function run(){
 		let tx = document.getElementById("code_area").value;
-		eval(tx);
+		let ftx = CODE_TOP + tx + CODE_BOTTOM;
+		console.log(ftx);
+		eval(ftx);
 	}
 
 
