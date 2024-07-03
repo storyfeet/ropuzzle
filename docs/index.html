@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Ro-Puzzle Box</title>
 		<style>
-			body {
+			.main {
 				display:flex;
 				flex-wrap:wrap;
 			}
@@ -19,33 +19,41 @@
 		</style>
 	</head>
 	<body>
-		<div id="canvas_box" class="info_box"> </div>
-		<div class="info_box">
-				<button id="btn_run" onclick="run()">run</button>
-				<button reset="btn_reset" onclick="reset();">reset</button>
-				<br>
-				<code>async function solvePuzzle(tt) {</code><br>
-				<textarea id="code_area" rows="20" cols="70" spellcheck="false"  ></textarea><br>
-				<code>}</code>
-
-			<h2>Available Methods</h2>
-
-			<pre><code>
-				tt.enabled -> boolean : Can the turtle still move?
-				tt.onRed() -> boolean: Is the turtle on a Red square?
-				await tt.fd() : Move the turtle forward one space
-				await tt.fd(n) : Move the turtle forward n space
-				await tt.rt() : Turn the turtle RighT one quarter turn.
-				await tt.rt(n) : Turn the turtle RighT n quarter turns.
-				await tt.lt() : Turn the turtle LefT one quarter turn.
-				await tt.lt(n) : Turn the turtle LefT n quarter turns.
-			</code></pre>
+		<div class="title">
+			<h1>Ropuzzle</h1>
+			Select Level : 
+			<select id="select_level" name="Level" onchange="reset()",  >
+				<option value="level1">Level 1</option>
+				<option value="level2">Level 2</option>
+				<option value="level3">Level 3</option>
+				<option value="level4">Level 4</option>
+			</select>
 		</div>
 
+		<div class="main">
+			<div id="canvas_box" class="info_box"> </div>
+			<div class="info_box">
+					<button id="btn_run" onclick="run()">run</button>
+					<button reset="btn_reset" onclick="reset();">reset</button>
+					<br>
+					<code>async function solvePuzzle(tt) {</code><br>
+					<textarea id="code_area" rows="20" cols="70" spellcheck="false"  ></textarea><br>
+					<code>}</code>
 
+				<h2>Available Methods</h2>
 
-			
-
+				<pre><code>
+tt.enabled -> boolean : Can the turtle still move?
+tt.onRed() -> boolean: Is the turtle on a Red square?
+await tt.fd() : Move the turtle forward one space
+await tt.fd(n) : Move the turtle forward n space
+await tt.rt() : Turn the turtle RighT one quarter turn.
+await tt.rt(n) : Turn the turtle RighT n quarter turns.
+await tt.lt() : Turn the turtle LefT one quarter turn.
+await tt.lt(n) : Turn the turtle LefT n quarter turns.
+				</code></pre>
+			</div>
+		</div>
 
 
 <script type="module">
@@ -65,24 +73,27 @@
 	}
 
 
-	function newPuzzle(cbox,name){
+	function newCanvas(cbox){
 		let newCanvas = document.createElement("canvas");
 		newCanvas.width = 400;
 		newCanvas.height = 400;
 		cbox.appendChild(newCanvas);
-		return rp.newTurtle(newCanvas,name);
+		return newCanvas;
 	}
 
 	function reset() {
-		let tset = [];
+		let chosen = document.getElementById("select_level").value;
 		let cbox = document.getElementById("canvas_box");	
 		cbox.innerHTML = "";
-		tset.push(newPuzzle(cbox,"level1A"));
-		tset.push(newPuzzle(cbox,"level1B"));
+			
+		let tset = rp.getTurtles(()=>{return newCanvas(cbox)} ,chosen);
+		
+		
 		window.tset = tset;
 	}
 
 	reset();
+
 
 	window.reset = reset;
 	window.run = run;

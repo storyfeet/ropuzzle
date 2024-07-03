@@ -1,9 +1,23 @@
 
+export function getTurtles(fnCanvas, levelName) {
+	let res = [];
+	let lev = levels[levelName];
+	if (!lev) {
+		console.log("NO Levels by that name");
+		return;
+	}
+	for (let l in levels[levelName]) {
+		res.push(new Turtle(fnCanvas(), lev[l]));
+	}
+
+	return res;
+}
+
 class Turtle {
 
-	constructor(canvas, levelName) {
+	constructor(canvas, level) {
 		this.canvas = canvas;
-		this.level = levels[levelName];
+		this.level = level;
 		this.posx = 0;
 		this.posy = 0;
 		this.enabled = true;
@@ -73,7 +87,8 @@ class Turtle {
 			await this.animFd(dx, dy);
 			this.posx = nx;
 			this.posy = ny;
-			if (this.location(nx, ny) == '_') {
+			let loc = this.location(nx, ny);
+			if (loc == '_' || loc == 'S') {
 				this.enabled = false;
 				await this.drawA();
 				return false;
@@ -220,22 +235,96 @@ export function newTurtle(canvas, level) {
 
 
 const levels = {
-	level1A: [
-		"_RWWWWWR_",
-		"_W_____W_",
-		"_W_RWS_W_",
-		"_W_W___W_",
-		"_W_W___W_",
-		"_W_RWWWR_",
-		"_B_______"
+	level1: [
+		[
+			"_RWWWWWR_",
+			"_W_____W_",
+			"_W_RWS_W_",
+			"_W_W___W_",
+			"_W_W___W_",
+			"_W_RWWWR_",
+			"_B_______"
+		],
+		[
+			"____RWWS_",
+			"____W____",
+			"_RWWWWWWR",
+			"_W__W___W",
+			"_W__W___W",
+			"_W__RWWWR",
+			"_B_______",
+		]
 	],
-	level1B: [
-		"____RWWS_",
-		"____W____",
-		"_RWWWWWWR",
-		"_W__W___W",
-		"_W__W___W",
-		"_W__RWWWR",
-		"_B_______",
+	level2: [
+		[
+			"________S_",
+			"________W_",
+			"_______RR_",
+			"_______W__",
+			"____RWWR__",
+			"____W_____",
+			"____W_____",
+			"__RWR_____",
+			"__B_______"
+		],
+		[
+			"_____RWWS_",
+			"_____W____",
+			"___RWR____",
+			"___W______",
+			"___W______",
+			"__RR______",
+			"__W_______",
+			"_RR_______",
+			"_B________",
+
+		]
+	],
+	level3: [
+		[
+			"_________",
+			"_______S_",
+			"_RWWWWWW_",
+			"_W_______",
+			"_W_______",
+			"_W_______",
+			"_W_______",
+			"_W_______",
+			"_B_______",
+		],
+		[
+			"______",
+			"____S_",
+			"_RWWW_",
+			"_W____",
+			"_W____",
+			"_B____",
+		]
+	],
+	level4: [
+		[
+			"________",
+			"_RRWWRR_",
+			"_W____R_",
+			"_R____R_",
+			"_W____W_",
+			"_R_SRWR_",
+			"_W______",
+			"_B______",
+		],
+		[
+			"________",
+			"_RWWRRR_",
+			"_W____R_",
+			"_R____R_",
+			"_W_RS_W_",
+			"_W_R__W_",
+			"_W_R__W_",
+			"_W_W__W_",
+			"_W_RRRR_",
+			"_R______",
+			"_B______",
+		]
 	]
+
 }
