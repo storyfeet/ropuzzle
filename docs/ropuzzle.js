@@ -21,6 +21,7 @@ class Turtle {
 		this.posx = 0;
 		this.posy = 0;
 		this.enabled = true;
+		this.actionCounter = 0;
 
 		for (let i = 0; i < this.level.length; i++) {
 			for (let j = 0; j < this.level[i].length; j++) {
@@ -33,6 +34,13 @@ class Turtle {
 		this.dir = 0;
 
 		this.draw();
+	}
+
+	action() {
+		this.actionCounter += 1;
+		if (this.actionCounter > 1000) {
+			this.error("Action Limit 1000 reached");
+		}
 	}
 
 	async drawA() {
@@ -74,11 +82,16 @@ class Turtle {
 	}
 
 	onRed() {
+		this.action();
 		return this.location(this.posx, this.posy) == 'R';
 	}
 
 	async fd(n = 1) {
-		if (!this.enabled) return false;
+		this.action();
+		if (!this.enabled) {
+			this.error("Turtle has failed");
+			return
+		}
 		let dx = sin4(this.dir);
 		let dy = - cos4(this.dir);
 		for (let i = 0; i < n; i++) {
@@ -91,6 +104,7 @@ class Turtle {
 			if (loc == '_' || loc == 'S') {
 				this.enabled = false;
 				await this.drawA();
+				this.error("Mission Complete");
 				return false;
 			}
 			await this.drawA();
@@ -110,6 +124,7 @@ class Turtle {
 	}
 
 	async rt(n = 1) {
+		this.action();
 		if (!this.enabled) return false;
 		for (let i = 0; i < n; i++) {
 			let ndir = this.dir + 1;
@@ -132,6 +147,7 @@ class Turtle {
 	}
 
 	async lt(n = 1) {
+		this.action();
 		if (!this.enabled) return false;
 		for (let i = 0; i < n; i++) {
 			let ndir = this.dir - 1;
@@ -151,10 +167,37 @@ class Turtle {
 			await sleep(100);
 		}
 	}
+
+	error(s) {
+		this.quickMessage(s);
+		throw new Error(s);
+	}
+
+	async message(s) {
+		quickMessage(s);
+		await sleep(1500);
+	}
+
+	quickMessage(s) {
+		console.log(s);
+		let ctx = this.canvas.getContext("2d");
+		let fontsize = this.canvas.width / 20;
+
+		ctx.fillStyle = "white";
+		ctx.fillRect(fontsize, 0, fontsize * s.length * 0.6, fontsize * 1.3);
+
+		ctx.font = `${fontsize}px serif`;
+		ctx.fillStyle = "black";
+		ctx.fillText(s, fontsize, fontsize);
+	}
+
 	location(x, y) {
 		if (y < 0) return '_';
 		if (y >= this.level.length) return '_';
 		let row = this.level[y];
+		if (row === undefined) {
+			return '_';
+		}
 		if (x < 0) return '_';
 		if (x > row.length) return '_';
 		return row[x];
