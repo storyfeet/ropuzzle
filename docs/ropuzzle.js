@@ -101,7 +101,13 @@ class Turtle {
 			this.posx = nx;
 			this.posy = ny;
 			let loc = this.location(nx, ny);
-			if (loc == '_' || loc == 'S') {
+			if (loc == '_') {
+				this.enabled = false;
+				await this.drawA();
+				this.error("Mission Failed");
+				return false;
+			}
+			if (loc == 'S') {
 				this.enabled = false;
 				await this.drawA();
 				this.error("Mission Complete");
